@@ -1,8 +1,5 @@
 export interface ILoginPayload {
-	tpNumber: number
 	email: string
-	password: string
-	userDevice: {}
 }
 
 export interface ILoginResponse {

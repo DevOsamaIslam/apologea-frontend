@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
-import MainLayout from 'layouts/MainLayout'
+import MainLayout from 'app/layouts/MainLayout'
 import { lazy } from 'react'
 
 const HomeModule = lazy(() => import('modules/home'))

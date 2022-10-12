@@ -5,12 +5,12 @@ import { ICreateArticle } from './types'
 const tagType = 'articles'
 const endpoints = apis.injectEndpoints({
 	endpoints: (builder) => ({
-		createArticle: builder.mutation<IArticle, ICreateArticle>({
-			query: (article) => ({ url: 'articles', method: 'POST', body: article }),
+		updateArticle: builder.mutation<IArticle, ICreateArticle>({
+			query: (patch) => ({ url: 'articles', method: 'PATCH', body: patch }),
 			invalidatesTags: [tagType],
 		}),
 	}),
 	overrideExisting: true,
 })
 
-export const { useCreateArticleMutation } = endpoints
+export const { useUpdateArticleMutation } = endpoints

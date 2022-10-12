@@ -1,16 +1,15 @@
 import apis from '#api'
 import { IArticle } from '../control/types'
-import { ICreateArticle } from './types'
 
 const tagType = 'articles'
 const endpoints = apis.injectEndpoints({
 	endpoints: (builder) => ({
-		createArticle: builder.mutation<IArticle, ICreateArticle>({
-			query: (article) => ({ url: 'articles', method: 'POST', body: article }),
+		deleteArticle: builder.mutation<IArticle, string>({
+			query: (id) => ({ url: 'articles', method: 'DELETE', body: { id } }),
 			invalidatesTags: [tagType],
 		}),
 	}),
 	overrideExisting: true,
 })
 
-export const { useCreateArticleMutation } = endpoints
+export const { useDeleteArticleMutation } = endpoints
