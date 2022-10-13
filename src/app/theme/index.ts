@@ -2,25 +2,25 @@ import { createTheme } from '@mui/material'
 
 const theme = createTheme({
 	palette: {
-		primary: { main: '#5B50A3' },
-		secondary: { main: '#F0E6A6' },
+		mode: 'light',
+		primary: {
+			main: '#BFB3A4',
+		},
+		secondary: {
+			main: '#4C6673',
+		},
 	},
 	typography: {
-		fontFamily: [
-			// 'Antic Slab',
-			'Poppins',
-			'Comfortaa',
-			'-apple-system',
-			'BlinkMacSystemFont',
-			'"Segoe UI"',
-			'Roboto',
-			'"Helvetica Neue"',
-			'Arial',
-			'sans-serif',
-			'"Apple Color Emoji"',
-			'"Segoe UI Emoji"',
-			'"Segoe UI Symbol"',
-		].join(','),
+		fontFamily: 'Comfortaa',
+	},
+	components: {
+		MuiLink: {
+			defaultProps: {
+				sx: {
+					textDecoration: 'none',
+				},
+			},
+		},
 	},
 })
 

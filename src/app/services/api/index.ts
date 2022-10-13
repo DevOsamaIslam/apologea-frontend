@@ -1,3 +1,4 @@
+import { getUser } from '@helpers'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import tagTypes from 'lib/constants/tagTypes'
 
@@ -6,8 +7,8 @@ const apis = createApi({
 	baseQuery: fetchBaseQuery({
 		baseUrl: process.env.BASE_URL,
 		prepareHeaders: (headers) => {
-			const { accessToken } = localStorage.get('user')
-			headers.set('authorization', `Bearer ${accessToken}`)
+			const user = getUser()
+			if (user?.accessToken) headers.set('authorization', `Bearer ${user.accessToken}`)
 			return headers
 		},
 	}),

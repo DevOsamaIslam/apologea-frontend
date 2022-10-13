@@ -41,10 +41,5 @@ export interface IUserState {
 
 export interface IUser extends ILoginResponse {
 	id: string
-	accounts: IUserAccount[]
-}
-
-export interface IUserAccount {
-	id: string
-	tpNumber: string
+	accessToken: string
 }

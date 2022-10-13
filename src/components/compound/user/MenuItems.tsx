@@ -11,12 +11,7 @@ interface IProps {
 	setAuthModal: Function
 }
 
-const MenuItems: FC<IProps> = ({
-	user,
-	handleCloseUserMenu,
-	wishlist,
-	setAuthModal,
-}) => {
+const MenuItems: FC<IProps> = ({ user, handleCloseUserMenu, wishlist, setAuthModal }) => {
 	const navigate = useNavigate()
 	const handleWishlistClicked = () => {
 		handleCloseUserMenu()
@@ -25,12 +20,10 @@ const MenuItems: FC<IProps> = ({
 	return (
 		<>
 			{user && [
-				<MenuItem key='name' onClick={handleCloseUserMenu}>
-					<Typography color='primary'>
-						{user?.firstName?.toUpperCase()}
-					</Typography>
+				<MenuItem key="name" onClick={handleCloseUserMenu}>
+					<Typography>{user?.firstName?.toUpperCase()}</Typography>
 				</MenuItem>,
-				<Divider key='divider' />,
+				<Divider key="divider" />,
 			]}
 			<MenuItem onClick={handleWishlistClicked}>
 				<Typography>Wishlist ({wishlist?.length || 0})</Typography>
@@ -47,7 +40,7 @@ const MenuItems: FC<IProps> = ({
 			) : (
 				[
 					<MenuItem
-						key='register'
+						key="register"
 						onClick={() => {
 							handleCloseUserMenu()
 							setAuthModal('register')
@@ -56,7 +49,7 @@ const MenuItems: FC<IProps> = ({
 						<Typography>Register</Typography>
 					</MenuItem>,
 					<MenuItem
-						key='login'
+						key="login"
 						onClick={() => {
 							handleCloseUserMenu()
 							setAuthModal('login')

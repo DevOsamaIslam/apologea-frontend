@@ -1,5 +1,6 @@
 export interface ILoginPayload {
-	email: string
+	identifier: string
+	password: string
 }
 
 export interface ILoginResponse {

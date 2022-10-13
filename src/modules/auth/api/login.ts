@@ -1,6 +1,18 @@
-import apiClient from 'app/services/axios'
-import { ILoginPayload } from 'lib/@types'
-import { ENDPOINTS } from 'lib/constants/endpoints'
+import apis from '#api'
+import { ILoginPayload, ILoginResponse } from 'lib/@types'
 
-export const loginApiCall = (loginCredentials: ILoginPayload) =>
-	apiClient.post(ENDPOINTS.login, loginCredentials)
+const endpoints = apis.injectEndpoints({
+	endpoints: (builder) => ({
+		loginUser: builder.mutation<ILoginResponse, ILoginPayload>({
+			query: (payload) => ({
+				url: `auth/login`,
+				method: 'POST',
+				body: payload,
+			}),
+			invalidatesTags: ['users'],
+		}),
+	}),
+	overrideExisting: true,
+})
+
+export const { useLoginUserMutation } = endpoints

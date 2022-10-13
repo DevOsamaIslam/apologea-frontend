@@ -13,20 +13,13 @@ interface IProps extends PropsWithChildren {
 	actions?: ReactNode[]
 	style?: CSSProperties
 }
-const Modal: FC<IProps> = ({
-	open,
-	setOpen,
-	title,
-	actions,
-	children,
-	style = {},
-}) => {
+const CustomModal: FC<IProps> = ({ open, setOpen, title, actions, children, style = {} }) => {
 	const handleClose = () => setOpen(false)
 
 	return (
 		<MUIModal
-			aria-labelledby='spring-modal-title'
-			aria-describedby='spring-modal-description'
+			aria-labelledby="spring-modal-title"
+			aria-describedby="spring-modal-description"
 			open={Boolean(open)}
 			onClose={handleClose}
 			closeAfterTransition
@@ -51,14 +44,14 @@ const Modal: FC<IProps> = ({
 					}}
 				>
 					{typeof title === 'string' ? (
-						<Typography id='spring-modal-title' variant='h6' component='h2'>
+						<Typography id="spring-modal-title" variant="h6" component="h2">
 							{title}
 						</Typography>
 					) : (
 						title
 					)}
 					<Divider />
-					<Box id='spring-modal-description' sx={{ mt: 2 }}>
+					<Box id="spring-modal-description" sx={{ mt: 2 }}>
 						{children}
 					</Box>
 				</Box>
@@ -67,4 +60,4 @@ const Modal: FC<IProps> = ({
 	)
 }
 
-export default Modal
+export default CustomModal
