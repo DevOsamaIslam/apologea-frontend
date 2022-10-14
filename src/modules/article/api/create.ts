@@ -1,11 +1,12 @@
 import apis from '#api'
+import { IBaseApiResponse } from 'lib/@types'
 import { IArticle } from '../control/types'
 import { ICreateArticle } from './types'
 
 const tagType = 'articles'
 const endpoints = apis.injectEndpoints({
 	endpoints: (builder) => ({
-		createArticle: builder.mutation<IArticle, ICreateArticle>({
+		createArticle: builder.mutation<IBaseApiResponse<IArticle | null>, ICreateArticle>({
 			query: (article) => ({ url: 'articles', method: 'POST', body: article }),
 			invalidatesTags: [tagType],
 		}),
