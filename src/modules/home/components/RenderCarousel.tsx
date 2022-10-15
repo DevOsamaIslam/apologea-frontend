@@ -2,6 +2,7 @@ import { Breadcrumbs, Button, Stack, Typography } from '@mui/material'
 import { IArticle } from 'modules/article/control/types'
 import { FC } from 'react'
 import Carousel from 'react-material-ui-carousel'
+import { Slider } from './styles'
 
 interface IProps {
 	articles: IArticle[]
@@ -10,22 +11,7 @@ const LandingSlider: FC<IProps> = ({ articles }) => {
 	return (
 		<Carousel navButtonsAlwaysInvisible animation="slide" indicators>
 			{articles.map((article, i) => (
-				<Stack
-					direction={'column'}
-					spacing={4}
-					sx={{
-						display: 'flex',
-						flexDirection: 'column',
-						alignItems: 'center',
-						justifyContent: 'center',
-						height: '75vh',
-						maxWidth: '950px',
-						margin: '0 auto',
-						position: 'relative',
-						zIndex: 10,
-						minHeight: '445px',
-					}}
-				>
+				<Slider>
 					<Typography
 						variant="h1"
 						color="white"
@@ -67,7 +53,7 @@ const LandingSlider: FC<IProps> = ({ articles }) => {
 					>
 						{article?.title[0]}
 					</Typography>
-				</Stack>
+				</Slider>
 			))}
 		</Carousel>
 	)
