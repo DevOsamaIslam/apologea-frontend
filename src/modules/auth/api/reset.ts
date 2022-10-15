@@ -1,4 +1,5 @@
 import apis from '#api'
+import { reduxStoreKeys } from '@constants'
 import { IBaseApiResponse } from 'lib/@types'
 
 const endpoints = apis.injectEndpoints({
@@ -9,7 +10,7 @@ const endpoints = apis.injectEndpoints({
 				body: body.email,
 				method: 'GET',
 			}),
-			providesTags: ['user'],
+			providesTags: [reduxStoreKeys.loggedInUser],
 		}),
 		verifyToken: builder.mutation<IBaseApiResponse<null>, { email: string; token: string }>({
 			query: (payload) => ({
@@ -17,7 +18,7 @@ const endpoints = apis.injectEndpoints({
 				method: 'POST',
 				body: payload,
 			}),
-			invalidatesTags: ['users'],
+			invalidatesTags: [reduxStoreKeys.loggedInUser],
 		}),
 		reset: builder.mutation<IBaseApiResponse<{ token: string } | null>, { email: string; token: string }>({
 			query: (payload) => ({
@@ -25,7 +26,7 @@ const endpoints = apis.injectEndpoints({
 				method: 'POST',
 				body: payload,
 			}),
-			invalidatesTags: ['users'],
+			invalidatesTags: [reduxStoreKeys.loggedInUser],
 		}),
 	}),
 	overrideExisting: true,

@@ -1,23 +1,18 @@
 import apis from '#api'
+import { reduxStoreKeys } from '@constants'
 
-const tagType = 'publishers'
 const endpoints = apis.injectEndpoints({
 	endpoints: (builder) => ({
 		getPublishers: builder.query({
 			query: () => `publishers`,
-			providesTags: [tagType],
+			providesTags: [reduxStoreKeys.users],
 		}),
 		getOnePublisher: builder.query({
 			query: () => `publishers`,
-			providesTags: [tagType],
+			providesTags: [reduxStoreKeys.users],
 		}),
 	}),
 	overrideExisting: true,
 })
 
-export const {
-	useGetOnePublisherQuery,
-	useGetPublishersQuery,
-	useLazyGetOnePublisherQuery,
-	useLazyGetPublishersQuery,
-} = endpoints
+export const { useGetOnePublisherQuery, useGetPublishersQuery, useLazyGetOnePublisherQuery, useLazyGetPublishersQuery } = endpoints

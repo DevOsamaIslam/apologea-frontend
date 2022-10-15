@@ -1,21 +1,21 @@
 import apis from '#api'
+import { reduxStoreKeys } from '@constants'
 import { IBaseApiResponse } from 'lib/@types'
 import { IArticle } from '../control/types'
 
-const tagType = 'articles'
 const endpoints = apis.injectEndpoints({
 	endpoints: (builder) => ({
 		getArticles: builder.query<IBaseApiResponse<IArticle[] | null>, void>({
 			query: () => `articles`,
-			providesTags: [tagType],
+			providesTags: [reduxStoreKeys.apologies],
 		}),
 		getOneArticle: builder.query<IBaseApiResponse<IArticle | null>, string>({
 			query: (id) => `articles/@${id}`,
-			providesTags: [tagType],
+			providesTags: [reduxStoreKeys.apologies],
 		}),
 		getTopArticles: builder.query<IBaseApiResponse<IArticle[] | null>, undefined>({
 			query: () => `articles/top`,
-			providesTags: [tagType],
+			providesTags: [reduxStoreKeys.apologies],
 		}),
 	}),
 	overrideExisting: true,

@@ -1,4 +1,5 @@
 import apis from '#api'
+import { reduxStoreKeys } from '@constants'
 import { ILoginPayload, ILoginResponse } from 'lib/@types'
 
 const endpoints = apis.injectEndpoints({
@@ -9,7 +10,7 @@ const endpoints = apis.injectEndpoints({
 				method: 'POST',
 				body: payload,
 			}),
-			invalidatesTags: ['users'],
+			invalidatesTags: [reduxStoreKeys.users],
 		}),
 	}),
 	overrideExisting: true,
