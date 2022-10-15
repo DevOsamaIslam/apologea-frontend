@@ -26,4 +26,6 @@ export const {
 	useGetOneArticleQuery,
 	useLazyGetArticlesQuery,
 	useLazyGetOneArticleQuery,
+	useGetTopArticlesQuery,
+	useLazyGetTopArticlesQuery,
 } = endpoints
