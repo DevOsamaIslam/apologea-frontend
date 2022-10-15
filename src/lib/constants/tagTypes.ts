@@ -1,1 +1,1 @@
-export default ['articles']
+export default ['articles', 'users', 'user']

@@ -1,25 +1,22 @@
-import { IFilter } from '../filters'
+export interface IPaging {
+	page?: number
+	limit?: number
+}
 
 export interface IGetQueryParams {
-	page: number
-	limit: number
-	filters: IFilter[]
+	paging?: IPaging
+	filters: Object
+	sort: { [x: string]: number }
 }
 
-export interface IBaseApiResponse<T = {}> {
-	count: number
-	page: number
-	pageCount: number
-	total: number
-	data: T[]
+export type feedbackType = 'success' | 'error' | 'warning'
+export interface IFeedback {
+	type: feedbackType
+	message: string
 }
 
-export type $ResponseRow<T = {}> = T & {
-	id: string
-	updatedAt: string
-	updatedBy: string
-	createdAt: string
-	createdBy: string
-	deletedAt: string | null
-	deletedBy: string
+export interface IBaseApiResponse<T = null> {
+	status: number
+	data: T | undefined
+	feedback: IFeedback
 }

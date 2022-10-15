@@ -1,5 +1,5 @@
 import { IArticle } from '../control/types'
 
-export interface ICreateArticle extends IArticle {}
+export interface ICreateArticle extends Partial<IArticle> {}
 
-export interface IUpdateArticle extends IArticle {}
+export interface IUpdateArticle extends Partial<IArticle> {}

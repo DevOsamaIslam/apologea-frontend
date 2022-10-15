@@ -1,9 +1,8 @@
 import { IArticle } from './types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { getTagType } from 'lib/helpers/arrays'
 
 const articlesSlice = createSlice({
-	name: getTagType('articles'),
+	name: 'articles',
 	initialState: [] as IArticle[],
 	reducers: {
 		setState: (state: any, action: PayloadAction<IArticle[]>) => {
