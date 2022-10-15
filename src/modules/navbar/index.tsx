@@ -30,21 +30,13 @@ const Navbar = () => {
 				<Toolbar disableGutters>
 					<LogoDesktop />
 
-					<MobileMenu
-						anchorElNav={anchorElNav}
-						handleCloseNavMenu={handleCloseNavMenu}
-						handleOpenNavMenu={handleOpenNavMenu}
-					/>
+					<MobileMenu anchorElNav={anchorElNav} handleCloseNavMenu={handleCloseNavMenu} handleOpenNavMenu={handleOpenNavMenu} />
 
 					<LogoMobile />
 
-					<DesktopMenu setAnchorElNav={setAnchorElNav} />
+					<DesktopMenu />
 
-					<RightMenu
-						anchorElUser={anchorElUser}
-						handleCloseUserMenu={handleCloseUserMenu}
-						handleOpenUserMenu={handleOpenUserMenu}
-					/>
+					<RightMenu anchorElUser={anchorElUser} handleCloseUserMenu={handleCloseUserMenu} handleOpenUserMenu={handleOpenUserMenu} />
 				</Toolbar>
 			</Container>
 		</AppBar>

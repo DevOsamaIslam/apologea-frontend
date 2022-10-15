@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { Div } from './styles'
+import { Container } from './styles'
 
 interface IProps {
 	title?: string
@@ -7,10 +7,10 @@ interface IProps {
 }
 const Banner: FC<IProps> = ({ title, image }) => {
 	return (
-		<Div>
+		<Container>
 			<img src={image} />
 			<div className="title">{title}</div>
-		</Div>
+		</Container>
 	)
 }
 
