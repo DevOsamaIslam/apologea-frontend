@@ -3,14 +3,18 @@ export interface IArticle {
 	title: string
 	body: string
 	excerpt?: string
-	author: string
+	author?: {
+		_id: string
+		profile: {
+			name: string
+		}
+	}
 	responseTo?: string
 	responses: string[]
-	likes?: string[]
+	likes: string[]
 	affirms?: string[]
 	comments: IComment[]
 	visible?: boolean
-	error?: Error
 }
 
 export interface IComment {

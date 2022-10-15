@@ -13,7 +13,7 @@ const DesktopMenu: FC = () => {
 					onClick={() => {
 						navigate(page.path)
 					}}
-					sx={{ my: 2, display: 'block', color: 'inherit' }}
+					sx={{ my: 2, display: 'block', color: 'white', fontWeight: 600, letterSpacing: 1.2 }}
 				>
 					{page.label}
 				</Button>

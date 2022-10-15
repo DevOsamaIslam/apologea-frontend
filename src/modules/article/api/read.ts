@@ -13,7 +13,7 @@ const endpoints = apis.injectEndpoints({
 			query: (id) => `articles/@${id}`,
 			providesTags: [reduxStoreKeys.apologies],
 		}),
-		getTopArticles: builder.query<IBaseApiResponse<IArticle[] | null>, undefined>({
+		getTopArticles: builder.query<IBaseApiResponse<IArticle[] | null>, void>({
 			query: () => `articles/top`,
 			providesTags: [reduxStoreKeys.apologies],
 		}),

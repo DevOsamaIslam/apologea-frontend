@@ -5,7 +5,7 @@ import tagTypes from 'lib/constants/tagTypes'
 const apis = createApi({
 	reducerPath: 'main-api',
 	baseQuery: fetchBaseQuery({
-		baseUrl: process.env.BASE_URL,
+		baseUrl: import.meta.env.VITE_BASE_URL,
 		prepareHeaders: (headers) => {
 			const user = getUser()
 			if (user?.accessToken) headers.set('authorization', `Bearer ${user.accessToken}`)
