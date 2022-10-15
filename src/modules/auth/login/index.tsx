@@ -20,9 +20,7 @@ const LoginForm: FC = () => {
 	const [loginUser] = useLoginUserMutation()
 
 	const finishLogin = async (values: ILoginForm) => {
-		console.log({ values })
 		const result = await loginUser(values)
-		console.log({ result })
 	}
 
 	return (
