@@ -1,4 +1,4 @@
-export const pathJoiner = (paths: string[]) => {
+export const pathJoiner = (...paths: string[]) => {
 	const newPath: string[] = []
 	paths.filter(Boolean).forEach((path) => {
 		if (path[0] === '/') path = path.slice(1, path.length)
