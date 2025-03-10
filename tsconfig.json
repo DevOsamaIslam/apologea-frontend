@@ -1,65 +1,6 @@
 {
-  "compilerOptions": {
-    "target": "ESNext",
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ESNext"
-    ],
-    "allowJs": false,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "module": "ESNext",
-    "moduleResolution": "Node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx", /* Specify the base directory to resolve non-relative module names. */
-    "outDir": "build",
-    "sourceMap": true,
-    "baseUrl": "./src",
-    "paths": { /* Specify a set of entries that re-map imports to additional lookup locations. */
-      "@helpers": [
-        "lib/helpers/index"
-      ],
-      "@pages/*": [
-        "modules/pages/*"
-      ],
-      "@redux-store": [
-        "app/store/redux/index"
-      ],
-      "@types": [
-        "lib/types/index"
-      ]
-    },
-    "noImplicitReturns": false,
-    "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": true,
-    "experimentalDecorators": true,
-    "declaration": true,
-    "noImplicitAny": false
-  },
-  "include": [
-    "src/**/*",
-    "./vite.config.ts"
-  ],
-  "typeRoots": [
-    "node_modules/@types",
-    "lib/@types"
-  ],
-  "exclude": [
-    "node_modules",
-    "build",
-    "scripts",
-    "acceptance-tests",
-    "webpack",
-    "jest",
-    "tslint:latest",
-    "tslint-config-prettier",
-    "**/*.spec.ts",
-    "**/*.spec.tsx"
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
   ]
 }

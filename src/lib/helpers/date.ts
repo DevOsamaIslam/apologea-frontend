@@ -1,45 +1,85 @@
-import moment from 'moment'
-export const ShortDateFormat = 'dd-mm-yyyy'
-export const ShortDateWithTimeFormat = 'dd-mm-yyyy H:mm:ss'
-export const ShortDateWithHoursAndMinutesFormat = 'dd-mm-yyyy H:mm'
-export const FullDateFormat = 'Do mm yyyy'
-export const FullDateWithTimeFormat = 'Do mmmm yyyy H:mm:ss'
-export const shortDateWithoutTimeFormat = 'mmmm d, yyyy'
+import { DATE_FORMAT } from '@lib/constants/date'
+import {
+  format,
+  parseISO,
+  differenceInDays,
+  addDays,
+  subDays,
+  isBefore,
+  isAfter,
+} from 'date-fns'
 
-export const getRangeBetweenTwoDates = (d1: string, d2: string): { lower: string; upper: string } => {
-	let lower = new Date(d1)
-	lower.setUTCHours(0, 0, 0, 0)
-
-	let upper = new Date(d2)
-	upper.setUTCHours(23, 59, 59, 999)
-
-	return {
-		lower: lower.toISOString(),
-		upper: upper.toISOString(),
-	}
+/**
+ * Formats a date into a readable string.
+ * @param date - The date to format (string | Date).
+ * @param dateFormat - The desired format (default: 'yyyy-MM-dd').
+ * @returns Formatted date string.
+ */
+export const formatDate = (
+  date: string | Date,
+  dateFormat = DATE_FORMAT,
+): string => {
+  return format(typeof date === 'string' ? parseISO(date) : date, dateFormat)
 }
 
-export const getDaysDifferenceBetweenTwoDates = (d1: string | Date, d2: string | Date) => {
-	const day1 = moment(d1)
-	const day2 = moment(d2)
-
-	const res = Math.abs(moment.duration(day1.diff(day2)).asDays())
-
-	if (res < 1) {
-		return 'Less than a day'
-	}
-	return `${Math.ceil(res)} days`
+/**
+ * Calculates the difference in days between two dates.
+ * @param startDate - The start date.
+ * @param endDate - The end date.
+ * @returns Number of days between the two dates.
+ */
+export const daysBetween = (
+  startDate: string | Date,
+  endDate: string | Date,
+): number => {
+  return differenceInDays(new Date(endDate), new Date(startDate))
 }
 
-export const getRangeBetweenSingleDate = (d: string): { lower: string; upper: string } => {
-	let lower = new Date(d)
-	lower.setUTCHours(0, 0, 0, 0)
+/**
+ * Adds days to a given date.
+ * @param date - The base date.
+ * @param days - Number of days to add.
+ * @returns The new date.
+ */
+export const addDaysToDate = (date: string | Date, days: number): Date => {
+  return addDays(new Date(date), days)
+}
 
-	let upper = new Date(d)
-	upper.setUTCHours(23, 59, 59, 999)
+/**
+ * Subtracts days from a given date.
+ * @param date - The base date.
+ * @param days - Number of days to subtract.
+ * @returns The new date.
+ */
+export const subtractDaysFromDate = (
+  date: string | Date,
+  days: number,
+): Date => {
+  return subDays(new Date(date), days)
+}
 
-	return {
-		lower: lower.toISOString(),
-		upper: upper.toISOString(),
-	}
+/**
+ * Checks if the first date is before the second date.
+ * @param date1 - First date.
+ * @param date2 - Second date.
+ * @returns True if date1 is before date2, otherwise false.
+ */
+export const isDateBefore = (
+  date1: string | Date,
+  date2: string | Date,
+): boolean => {
+  return isBefore(new Date(date1), new Date(date2))
+}
+
+/**
+ * Checks if the first date is after the second date.
+ * @param date1 - First date.
+ * @param date2 - Second date.
+ * @returns True if date1 is after date2, otherwise false.
+ */
+export const isDateAfter = (
+  date1: string | Date,
+  date2: string | Date,
+): boolean => {
+  return isAfter(new Date(date1), new Date(date2))
 }

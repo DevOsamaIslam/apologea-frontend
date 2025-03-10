@@ -1,15 +1,7 @@
 import { defineConfig } from 'vite'
-import tsconfigPaths from 'vite-tsconfig-paths'
 import react from '@vitejs/plugin-react'
+import tsconfigPaths from 'vite-tsconfig-paths'
 
-// https://vitejs.dev/config/
 export default defineConfig({
-	plugins: [react(), tsconfigPaths()],
-	mode: 'development',
-	define: {
-		'process.env': {
-			BASE_URL: 'http://localhost:5000/api/',
-			APP_NAME: 'APOLOGEA',
-		},
-	},
+  plugins: [react(), tsconfigPaths()],
 })

@@ -1,18 +1,24 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import tagTypes from 'lib/constants/tagTypes'
+import settings from '../settings'
+import { REDUCER_PATHS, TAG_TYPES } from '@constants/api'
+import { getItem } from '@lib/helpers/localStorage'
 
-const apis = createApi({
-	reducerPath: 'main-api',
-	baseQuery: fetchBaseQuery({
-		baseUrl: process.env.BASE_URL,
-		prepareHeaders: (headers) => {
-			const { accessToken } = localStorage.get('user')
-			headers.set('authorization', `Bearer ${accessToken}`)
-			return headers
-		},
-	}),
-	tagTypes,
-	endpoints: () => ({}),
+export const apiSlice = createApi({
+  reducerPath: REDUCER_PATHS.api,
+  tagTypes: Object.keys(TAG_TYPES),
+  baseQuery: fetchBaseQuery({
+    baseUrl: settings.BASE_URL,
+    prepareHeaders: (headers) => {
+      // Get the token from Redux state
+      const token = getItem<string>('token')
+
+      if (token) {
+        headers.set('Authorization', `Bearer ${token}`)
+      }
+
+      headers.set('Content-Type', 'application/json')
+      return headers
+    },
+  }),
+  endpoints: () => ({}),
 })
-
-export default apis
