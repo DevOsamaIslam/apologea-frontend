@@ -1,16 +1,17 @@
 import { useAppSelector } from '@app/store'
 import { useGetArticlesQuery } from '@modules/articles/control/api'
+import { useUploadMutation } from '@modules/gallery/api'
 import { Avatar, Divider, Stack, Typography, useTheme } from '@mui/material'
 import ArticlePreview from '@shared/ArticlePreview'
 import ExpandableText from '@shared/ExpandableText'
+import { HiddenInput } from '@shared/HiddenInput'
 import Loading from '@shared/LinearIndeterminate'
 import ListDisplay from '@shared/ListDisplay'
 import PageContainer from '@shared/PageContainer'
+import PageTitle from '@shared/PageTitle'
 import { ChangeEvent, FC } from 'react'
-import { useGetUserQuery, useUpdateUserMutation } from './control/api'
 import { useParams } from 'react-router'
-import { HiddenInput } from '@shared/HiddenInput'
-import { useUploadMutation } from '@modules/gallery/api'
+import { useGetUserQuery, useUpdateUserMutation } from './control/api'
 
 const UserProfile: FC = () => {
   const user = useAppSelector(state => state.user.user)
@@ -46,6 +47,7 @@ const UserProfile: FC = () => {
 
   return (
     <Stack gap={8}>
+      <PageTitle>{profile?.username}</PageTitle>
       <PageContainer>
         <Stack
           direction={'row'}
