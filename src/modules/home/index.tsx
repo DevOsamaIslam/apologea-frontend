@@ -23,6 +23,7 @@ const Home: FC = () => {
         <Carousel
           items={response?.payload.docs || []}
           autoplay={3000}
+          navigation={false}
           renderItem={article => {
             return (
               <Center key={article.id}>
