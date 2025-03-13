@@ -1,6 +1,11 @@
 import { Operators } from '@lib/constants/api'
 import { z } from 'zod'
 
+export type TBaseRow<T> = T & {
+  createdAt: string
+  updatedAt: string
+}
+
 export interface IBaseResponse<T = unknown> {
   payload: T
   statusCode: number
@@ -11,7 +16,7 @@ export interface IBaseResponse<T = unknown> {
 }
 
 export interface IPaginatedResponse<T = unknown> {
-  docs: T[]
+  docs: TBaseRow<T>[]
   totalDocs: number
   limit: number
   totalPages: number
@@ -32,10 +37,11 @@ export interface IFilter {
 
 export interface IPopulate {
   path: string
-  fields?: string[]
+  select?: string[]
 }
 
 export type TGetQueryParams = Partial<{
+  fields: string[]
   sort: string
   limit: number
   filters: IFilter[]

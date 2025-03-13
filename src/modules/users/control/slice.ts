@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { TUser, IUserState } from './types'
+import { removeItem } from '@lib/helpers/localStorage'
 
 // Load user from localStorage if available
 const initialState: IUserState = {
@@ -20,6 +21,7 @@ const userSlice = createSlice({
     logout: (state) => {
       state.status = 'idle'
       state.user = null
+      removeItem('token')
       state.isAuthenticated = false
     },
     updateProfile: (state, action: PayloadAction<Partial<TUser>>) => {

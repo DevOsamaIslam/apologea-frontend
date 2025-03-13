@@ -1,40 +1,28 @@
-import { css, useTheme } from '@mui/material'
-import { FC, useEffect } from 'react'
+import { GlobalStyles as MuiGlobalStyles } from '@mui/material'
 
-const GlobalStyles: FC = () => {
-  const theme = useTheme()
-
-  useEffect(() => {
-    css()
-
-    document.documentElement.style.setProperty(
-      '--primary',
-      theme.palette.primary.main,
-    )
-    document.documentElement.style.setProperty(
-      '--primary-dark',
-      theme.palette.primary.dark,
-    )
-    document.documentElement.style.setProperty(
-      '--primary-light',
-      theme.palette.primary.light,
-    )
-
-    document.documentElement.style.setProperty(
-      '--secondary',
-      theme.palette.secondary.main,
-    )
-    document.documentElement.style.setProperty(
-      '--secondary-dark',
-      theme.palette.secondary.dark,
-    )
-    document.documentElement.style.setProperty(
-      '--secondary-light',
-      theme.palette.secondary.light,
-    )
-  }, [theme])
-
-  return null
-}
+const GlobalStyles = () => (
+  <MuiGlobalStyles
+    styles={theme => ({
+      ':root': {
+        '--primary': theme.palette.primary.main,
+        '--primary-dark': theme.palette.primary.dark,
+        '--primary-light': theme.palette.primary.light,
+        '--secondary': theme.palette.secondary.main,
+        '--secondary-dark': theme.palette.secondary.dark,
+        '--secondary-light': theme.palette.secondary.light,
+      },
+      a: {
+        textDecoration: 'none',
+        color: theme.palette.secondary.main,
+      },
+      'button.MuiButton-contained a': {
+        color: theme.palette.background.paper,
+      },
+      '.debug': {
+        border: '1px solid red',
+      },
+    })}
+  />
+)
 
 export default GlobalStyles

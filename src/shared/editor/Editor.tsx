@@ -1,34 +1,38 @@
 import theme from '@app/theme'
-import { Block } from '@blocknote/core'
+import { PartialBlock } from '@blocknote/core'
 import '@blocknote/core/fonts/inter.css'
 import { BlockNoteView, Theme as EditorTheme } from '@blocknote/mantine'
 import '@blocknote/mantine/style.css'
 import { useCreateBlockNote } from '@blocknote/react'
-import { IBlock } from '@modules/articles/control/types'
+import { useUploadMutation } from '@modules/gallery/api'
 import { Theme, useTheme } from '@mui/material'
 import { FC } from 'react'
 
+const placeholderBlock = [{ type: 'paragraph' }] as PartialBlock[]
+
 interface IProps {
-  data: IBlock[]
-  onChange?: (data: IBlock[]) => void
+  data: PartialBlock[] | undefined
+  onChange?: (data: PartialBlock[]) => void
   editable?: boolean
 }
 const Editor: FC<IProps> = ({ onChange, data, editable = true }) => {
   const theme = useTheme()
-  const placeholder = data.length ? [] : [{ type: 'paragraph' }]
+  const [uploadFn] = useUploadMutation()
 
   const editor = useCreateBlockNote({
-    // @ts-expect-error...
-    initialContent: [...data, ...placeholder],
+    initialContent: [...(data?.length ? data : placeholderBlock)],
+    uploadFile: async (file) => {
+      return await uploadFn({ files: [file] }).then((response) => {
+        return response.data?.payload[0].url || ''
+      })
+    },
   })
 
-  // Renders the editor instance using a React component.
   return (
     <BlockNoteView
       editor={editor}
       editable={editable}
       onChange={() => {
-        // @ts-expect-error...
         onChange?.(editor.document)
       }}
       theme={getEditorTheme(theme)}
@@ -41,7 +45,7 @@ const getEditorTheme = (appTheme: Theme): EditorTheme => ({
   colors: {
     border: theme.palette.divider,
     editor: {
-      background: theme.palette.background.default,
+      background: theme.palette.background.paper,
       text: appTheme.palette.text.primary,
     },
     menu: {

@@ -1,27 +1,47 @@
 import { useAppSelector } from '@app/store'
 import { useGetArticlesQuery } from '@modules/articles/control/api'
-import { Email, Person } from '@mui/icons-material'
 import { Avatar, Divider, Stack, Typography, useTheme } from '@mui/material'
 import ArticlePreview from '@shared/ArticlePreview'
+import ExpandableText from '@shared/ExpandableText'
 import Loading from '@shared/LinearIndeterminate'
 import ListDisplay from '@shared/ListDisplay'
 import PageContainer from '@shared/PageContainer'
-import { FC } from 'react'
+import { ChangeEvent, FC } from 'react'
+import { useGetUserQuery, useUpdateUserMutation } from './control/api'
+import { useParams } from 'react-router'
+import { HiddenInput } from '@shared/HiddenInput'
+import { useUploadMutation } from '@modules/gallery/api'
 
 const UserProfile: FC = () => {
-  const user = useAppSelector((state) => state.user.user)
+  const user = useAppSelector(state => state.user.user)
+  const { name } = useParams()
   const theme = useTheme()
+
+  const { data: userResponse } = useGetUserQuery(
+    { name: name! },
+    { skip: !user },
+  )
+
+  const [uploadFn] = useUploadMutation()
+  const [updateFn] = useUpdateUserMutation()
+
+  const profile = userResponse?.payload
 
   const { data: response, isFetching } = useGetArticlesQuery({
     filters: [
       {
         field: 'authorId',
         operator: 'equals',
-        value: user?._id,
+        value: profile?._id,
       },
     ],
     limit: 100,
     sort: 'createdAt,-1',
+    populate: [
+      {
+        path: 'author',
+      },
+    ],
   })
 
   return (
@@ -30,64 +50,97 @@ const UserProfile: FC = () => {
         <Stack
           direction={'row'}
           justifyContent={'space-between'}
-          px={8}
+          px={4}
           alignItems={'center'}
+          gap={8}
         >
-          <Avatar
-            children={
-              <Typography variant="h1">
-                {user?.username.charAt(0).toUpperCase()}
-              </Typography>
-            }
-            sx={{
-              background: theme.palette.secondary.main,
-              width: 100,
-              height: 100,
-            }}
-          />
-          <Stack direction={'row'}>
+          <label htmlFor="upload">
+            <HiddenInput
+              type="file"
+              id="upload"
+              onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                if (!event.target.files) return
+
+                uploadFn({ files: [event.target.files?.[0]] }).then(
+                  response => {
+                    if (response.data?.feedback.type === 'success')
+                      updateFn({
+                        username: profile!.username,
+                        photo: response.data.payload[0].url,
+                      })
+                  },
+                )
+              }}
+            />
+            <Avatar
+              children={
+                <Typography variant="h1">
+                  {profile?.username.charAt(0).toUpperCase()}
+                </Typography>
+              }
+              src={profile?.photo}
+              sx={{
+                background: theme.palette.secondary.main,
+                width: 100,
+                height: 100,
+                cursor: 'pointer',
+              }}
+            />
+          </label>
+          <Stack direction={'row'} flex={1} justifyContent={'space-between'}>
             <ListDisplay
               items={[
                 {
-                  primary: 'First Name',
-                  secondary: user?.firstName,
-                  icon: <Person />,
+                  primary: (
+                    <Stack direction={'row'} gap={1}>
+                      <span>First Name: </span>
+                      <strong>{profile?.firstName || 'N/A'}</strong>
+                    </Stack>
+                  ),
                 },
                 {
-                  primary: 'Last Name',
-                  secondary: user?.lastName,
-                  icon: <Person />,
+                  primary: (
+                    <Stack direction={'row'} gap={1}>
+                      <span>Last Name: </span>
+                      <strong>{profile?.lastName || 'N/A'}</strong>
+                    </Stack>
+                  ),
                 },
               ]}
             />
             <ListDisplay
               items={[
                 {
-                  primary: 'Username',
-                  secondary: user?.username,
-                  icon: <Person />,
+                  primary: (
+                    <Stack direction={'row'} gap={1}>
+                      <span>Username: </span>
+                      <strong>{profile?.username}</strong>
+                    </Stack>
+                  ),
                 },
                 {
-                  primary: 'Email',
-                  secondary: user?.email,
-                  icon: <Email />,
+                  primary: (
+                    <Stack direction={'row'} gap={1}>
+                      <span>Email: </span>
+                      <strong>{profile?.email}</strong>
+                    </Stack>
+                  ),
                 },
               ]}
             />
           </Stack>
         </Stack>
         <Divider />
-        <Typography variant="body1">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore,
-          eligendi cumque sunt eos adipisci eaque numquam repudiandae veritatis
-          repellat ex, libero impedit expedita quibusdam nam. Qui perferendis
-          esse blanditiis accusantium?
-        </Typography>
+        <ExpandableText
+          sx={{ p: 1 }}
+          variant="body1"
+          text={profile?.bio || 'N/A'}
+        />
       </PageContainer>
 
       <PageContainer>
         <Loading loading={isFetching} />
-        {response?.payload.docs.map((article) => (
+        {response?.payload.docs.map(article => (
           <ArticlePreview article={article} />
         ))}
       </PageContainer>

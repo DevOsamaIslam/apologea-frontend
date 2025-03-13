@@ -1,5 +1,6 @@
-import { Button, ButtonProps, Menu, MenuItem } from '@mui/material'
-import React, { ReactNode, useState } from 'react'
+import { Menu, MenuItem } from '@mui/material'
+import React, { ComponentProps, ReactNode, useState } from 'react'
+import ActionButton from './ActionButton'
 
 type TMenuOption = {
   label: ReactNode
@@ -7,7 +8,7 @@ type TMenuOption = {
 }
 
 type TMenuDropdownProps = {
-  buttonProps: ButtonProps
+  buttonProps?: ComponentProps<typeof ActionButton>
   options: TMenuOption[]
 }
 
@@ -28,7 +29,7 @@ const MenuDropdown: React.FC<TMenuDropdownProps> = ({
 
   return (
     <>
-      <Button onClick={handleClick} {...buttonProps} />
+      <ActionButton onClick={handleClick} {...buttonProps} />
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         {options.map((option, index) => (
           <MenuItem

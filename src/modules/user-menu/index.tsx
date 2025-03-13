@@ -3,7 +3,7 @@ import { conditionalArrayItem } from '@lib/helpers/utils'
 import { userActions } from '@modules/users/control/slice'
 import { AccountCircle } from '@mui/icons-material'
 import MenuDropdown from '@shared/MenuDropdown'
-import { ComponentProps, FC } from 'react'
+import { ComponentProps, FC, useMemo } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
 
@@ -12,7 +12,7 @@ const UserMenu: FC = () => {
   const dispatch = useDispatch()
   const goto = useNavigate()
 
-  const getMenuItems = () => {
+  const menuItems = useMemo(() => {
     const items: ComponentProps<typeof MenuDropdown>['options'] = [
       ...conditionalArrayItem(!!user, {
         label: user?.email,
@@ -32,16 +32,21 @@ const UserMenu: FC = () => {
       })
     }
     return items
-  }
+  }, [user])
 
   return (
     <MenuDropdown
       buttonProps={{
-        sx: { color: 'white' },
+        type: 'clear',
         startIcon: <AccountCircle />,
         children: user?.username,
+        extraProps: {
+          sx: {
+            color: 'white',
+          },
+        },
       }}
-      options={getMenuItems()}
+      options={menuItems}
     />
   )
 }

@@ -4,14 +4,12 @@ import { amber, blue, green, red } from '@mui/material/colors'
 const theme = createTheme({
   palette: {
     primary: {
-      // light: '#0aa',
       main: '#088',
-      // dark: '#066',
+      contrastText: '#fff',
     },
     secondary: {
-      // light: '#0ff',
       main: '#800',
-      // dark: '#0bb',
+      contrastText: '#fff',
     },
     success: {
       light: green[300],
@@ -34,8 +32,8 @@ const theme = createTheme({
       dark: blue[800],
     },
     background: {
-      default: '#f4f6f8',
-      paper: '#ffffff',
+      default: '#fff',
+      paper: '#efebe9',
     },
     text: {
       primary: '#212121',

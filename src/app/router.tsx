@@ -10,6 +10,7 @@ import UserProfile from '@modules/users'
 import NewArticle from '@modules/articles/new/NewArticle'
 import ArticlesPage from '@modules/articles'
 import ViewArticle from '@modules/articles/view'
+import RegisterPage from '@modules/auth/Register'
 
 export const AppRouter: FC = () => {
   const user = useAppSelector((state) => state.user)
@@ -44,7 +45,7 @@ export const AppRouter: FC = () => {
       <Route path="/auth" element={<AuthLayout />}>
         <Route index element={<Navigate to="login" replace />} />
         <Route path="login" element={<LoginPage />} />
-        <Route path="register" element={<></>} />
+        <Route path="register" element={<RegisterPage />} />
       </Route>
       <Route path="*" element={<Navigate to="/auth/login" replace />} />
     </Routes>

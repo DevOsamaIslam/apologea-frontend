@@ -21,9 +21,11 @@ export const UserSchema = z.object({
     .regex(/[^a-zA-Z0-9]/, {
       message: 'Password must include at least one special character',
     }),
-  role: z.enum(['user', 'admin']),
+  photo: z.string().optional(),
   articleIds: z.array(z.string()),
+  bio: z.string().optional(),
 })
+export type TUser = z.infer<typeof UserSchema>
 
 export const LoginSchema = UserSchema.pick({ email: true, password: true })
 export type TLoginPayload = z.infer<typeof LoginSchema>
@@ -33,8 +35,19 @@ export const RegistrationSchema = UserSchema.pick({
   email: true,
   password: true,
 })
+export type TRegistrationPayload = z.infer<typeof RegistrationSchema>
 
-export type TUser = z.infer<typeof UserSchema>
+export const UpdateUserSchema = UserSchema.pick({
+  username: true,
+  firstName: true,
+  lastName: true,
+  password: true,
+  photo: true,
+  bio: true,
+})
+  .partial()
+  .required({ username: true })
+export type TUpdateUserPayload = z.infer<typeof UpdateUserSchema>
 
 export interface IUserState {
   user: TUser | null

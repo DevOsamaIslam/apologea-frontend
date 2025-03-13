@@ -1,4 +1,4 @@
-import { Block } from '@blocknote/core'
+import { Block, defaultBlockSchema } from '@blocknote/core'
 import { UserSchema } from '@modules/users/control/types'
 import { z } from 'zod'
 
@@ -13,6 +13,10 @@ export const ArticleSchema = z.object({
   tags: z.array(z.string()).optional(),
   published: z.boolean(),
   createdAt: z.date(),
+  views: z.number(),
+  likes: z.array(z.string()),
+  responseTo: z.string().optional(),
+  responses: z.array(z.string()),
 })
 
 export type TArticle = z.infer<typeof ArticleSchema>
@@ -50,3 +54,13 @@ interface Props {
   textAlignment: string
   level: number
 }
+
+export type TParagraphBlock = Extract<
+  Block<typeof defaultBlockSchema>,
+  { type: 'paragraph' }
+>
+
+export type THeadingBlock = Extract<
+  Block<typeof defaultBlockSchema>,
+  { type: 'heading' }
+>

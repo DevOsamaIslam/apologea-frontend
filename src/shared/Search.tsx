@@ -1,6 +1,7 @@
-import { styled, alpha, InputBase } from '@mui/material'
-import { FC } from 'react'
 import SearchIcon from '@mui/icons-material/Search'
+import { alpha, InputBase, styled } from '@mui/material'
+import { FC, useState } from 'react'
+import { useNavigate } from 'react-router'
 
 const StyledSearch = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -44,14 +45,39 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }))
 
-export const Search: FC = () => (
-  <StyledSearch>
-    <SearchIconWrapper>
-      <SearchIcon />
-    </SearchIconWrapper>
-    <StyledInputBase
-      placeholder="Search…"
-      inputProps={{ 'aria-label': 'search' }}
-    />
-  </StyledSearch>
-)
+export const Search: FC = () => {
+  const [term, setTerm] = useState('')
+  const goto = useNavigate()
+
+  const handleSearch = () => {
+    const searchTerm = term.trim()
+    if (searchTerm) {
+      goto({
+        pathname: 'articles',
+        search: `search=${searchTerm}`,
+      })
+      setTerm('')
+    }
+  }
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handleSearch()
+    }
+  }
+
+  return (
+    <StyledSearch>
+      <SearchIconWrapper>
+        <SearchIcon onClick={handleSearch} />
+      </SearchIconWrapper>
+      <StyledInputBase
+        placeholder="Search…"
+        inputProps={{ 'aria-label': 'search' }}
+        value={term}
+        onChange={event => setTerm(event.target.value)}
+        onKeyDown={handleKeyDown}
+      />
+    </StyledSearch>
+  )
+}

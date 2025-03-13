@@ -3,22 +3,27 @@ import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemAvatar from '@mui/material/ListItemAvatar'
 import ListItemText from '@mui/material/ListItemText'
+import { ComponentProps } from 'react'
 
 interface IListItem<T> {
-  primary: string
-  secondary?: string
+  primary: React.ReactNode
+  secondary?: React.ReactNode
   icon?: React.ReactNode
   data?: T
 }
 
-interface ListWrapperProps<T> {
+interface ListWrapperProps<T> extends ComponentProps<typeof List> {
   items: IListItem<T>[]
   renderItem?: (item: IListItem<T>) => React.ReactNode
 }
 
-const ListDisplay = <T,>({ items, renderItem }: ListWrapperProps<T>) => {
+const ListDisplay = <T,>({
+  items,
+  renderItem,
+  ...listProps
+}: ListWrapperProps<T>) => {
   return (
-    <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+    <List {...listProps}>
       {items.map((item, index) =>
         renderItem ? (
           renderItem(item)

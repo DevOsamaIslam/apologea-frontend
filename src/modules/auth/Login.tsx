@@ -2,10 +2,13 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useLoginUserMutation } from '@modules/users/control/api'
 import { LoginSchema, TLoginPayload } from '@modules/users/control/types'
 import { Box, Container, Typography } from '@mui/material'
+import PageContainer from '@shared/PageContainer'
+import PageTitle from '@shared/PageTitle'
 import { CustomForm } from 'mui-custom-form'
 import { IFieldGroup } from 'mui-custom-form/dist/types'
 import { FC } from 'react'
 import { useForm } from 'react-hook-form'
+import { Link } from 'react-router'
 
 const LoginPage: FC = () => {
   const [loginFn] = useLoginUserMutation()
@@ -14,7 +17,7 @@ const LoginPage: FC = () => {
     resolver: zodResolver(LoginSchema),
   })
 
-  const handleSubmit = formControl.handleSubmit((data) => {
+  const handleSubmit = formControl.handleSubmit(data => {
     loginFn(data)
   })
 
@@ -38,28 +41,21 @@ const LoginPage: FC = () => {
   ]
 
   return (
-    <Container maxWidth="xs">
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          mt: 8,
-          p: 3,
-          borderRadius: 2,
-          boxShadow: 3,
-        }}
-      >
-        <Typography variant="h5" gutterBottom>
-          Login
-        </Typography>
-        <CustomForm
-          fieldsGroups={fields}
-          onSubmit={[handleSubmit]}
-          formControl={formControl}
-        />
-      </Box>
-    </Container>
+    <PageContainer sx={{ pt: 2 }}>
+      <PageTitle>Login</PageTitle>
+      <Typography variant="h5" gutterBottom>
+        Login
+      </Typography>
+      <CustomForm
+        fieldsGroups={fields}
+        onSubmit={[handleSubmit]}
+        formControl={formControl}
+        submitButton={{ fullWidth: true }}
+      />
+      <Typography textAlign={'center'}>
+        Don't have account? <Link to="/auth/register">Register</Link>
+      </Typography>
+    </PageContainer>
   )
 }
 
