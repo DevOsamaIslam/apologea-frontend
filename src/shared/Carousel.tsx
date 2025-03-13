@@ -20,9 +20,9 @@ const Carousel = <T,>({
 }: CarouselProps<T>) => {
   const [index, setIndex] = useState(0)
 
-  const nextSlide = () => setIndex((prev) => (prev + 1) % items.length)
+  const nextSlide = () => setIndex(prev => (prev + 1) % items.length)
   const prevSlide = () =>
-    setIndex((prev) => (prev - 1 + items.length) % items.length)
+    setIndex(prev => (prev - 1 + items.length) % items.length)
   const item = items[index]
 
   // Auto-play effect
@@ -32,7 +32,7 @@ const Carousel = <T,>({
     const timer = setInterval(nextSlide, autoplay)
 
     return () => clearInterval(timer)
-  }, [autoplay, items.length])
+  }, [autoplay, items.length, index])
 
   return (
     <Box position="relative" width="100%" height="100%" overflow="hidden">
