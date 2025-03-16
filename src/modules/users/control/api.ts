@@ -48,7 +48,7 @@ export const {
       TLoginPayload
     >({
       query: payload => ({
-        url: 'users/login/',
+        url: 'users/login',
         method: 'POST',
         body: payload,
       }),
@@ -91,7 +91,7 @@ export const {
     >({
       providesTags: [TAG_TYPES.user],
       query: ({ queryParams, name }) => ({
-        url: `users/${name}`,
+        url: `users/@${name}`,
         method: 'POST',
         body: queryParams,
       }),
@@ -100,7 +100,7 @@ export const {
     updateUser: builder.mutation<IBaseResponse<TUser>, TUpdateUserPayload>({
       invalidatesTags: [TAG_TYPES.user],
       query: payload => ({
-        url: `users/${payload.username}`,
+        url: `users/@${payload.username}`,
         method: 'PATCH',
         body: payload,
       }),

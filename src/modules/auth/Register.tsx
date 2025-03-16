@@ -52,7 +52,7 @@ const RegisterPage: FC = () => {
   ]
 
   return (
-    <PageContainer sx={{ pt: 2 }}>
+    <PageContainer sx={{ pt: 2, maxHeight: '40vh', mt: 16 }}>
       <PageTitle>Register</PageTitle>
       <Typography variant="h5" gutterBottom>
         Register

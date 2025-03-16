@@ -1,12 +1,13 @@
+import { MAX_EXCERPT_LENGTH } from '@app/settings'
 import { Block, defaultBlockSchema } from '@blocknote/core'
 import { UserSchema } from '@modules/users/control/types'
 import { z } from 'zod'
 
-// Define Zod schema for an article
-export const ArticleSchema = z.object({
+const ArticleBaseSchema = z.object({
   id: z.string(),
   title: z.string().min(3).max(100),
   content: z.string().min(10),
+  excerpt: z.string().max(MAX_EXCERPT_LENGTH),
   slug: z.string(),
   authorId: z.string(),
   author: UserSchema.optional(),
@@ -15,8 +16,13 @@ export const ArticleSchema = z.object({
   createdAt: z.date(),
   views: z.number(),
   likes: z.array(z.string()),
-  responseTo: z.string().optional(),
-  responses: z.array(z.string()),
+  responseToId: z.string().optional(),
+  responsesIds: z.array(z.string()),
+})
+
+export const ArticleSchema = ArticleBaseSchema.extend({
+  responseTo: ArticleBaseSchema.optional(),
+  responses: z.array(ArticleBaseSchema.partial()),
 })
 
 export type TArticle = z.infer<typeof ArticleSchema>
@@ -26,6 +32,8 @@ export const createArticleSchema = ArticleSchema.pick({
   content: true,
   tags: true,
   published: true,
+  excerpt: true,
+  responseToId: true,
 })
 export const updateArticleSchema = ArticleSchema.partial().required({
   id: true,

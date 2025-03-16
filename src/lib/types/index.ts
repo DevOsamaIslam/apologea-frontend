@@ -38,6 +38,7 @@ export interface IFilter {
 export interface IPopulate {
   path: string
   select?: string[]
+  populate?: IPopulate
 }
 
 export type TGetQueryParams = Partial<{
@@ -48,3 +49,8 @@ export type TGetQueryParams = Partial<{
   page: number
   populate: IPopulate[]
 }>
+
+export interface IInfiniteQueryParams<T> {
+  pageParam: number
+  queryArg: T
+}

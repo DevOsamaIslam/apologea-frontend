@@ -1,89 +1,151 @@
-import settings from '@app/settings'
+import { MAX_EXCERPT_LENGTH, MAX_TITLE_LENGTH } from '@app/settings'
 import { PartialBlock } from '@blocknote/core'
 import {
+  Alert,
   Box,
   Divider,
-  Input,
   Stack,
-  TextareaAutosize,
   TextField,
+  Typography,
 } from '@mui/material'
 import ActionButton from '@shared/ActionButton'
+import CharacterLimit from '@shared/CharacterLimit'
 import Editor from '@shared/editor/Editor'
 import PageContainer from '@shared/PageContainer'
-import { FC, useState } from 'react'
+import PageTitle from '@shared/PageTitle'
+import { snackbar } from '@shared/snack-bar/GlobalSnackbar'
+import { FC, memo, useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router'
 import {
   useCreateArticleMutation,
   useGetArticleBySlugQuery,
+  useUpdateArticleMutation,
 } from '../control/api'
-import PageTitle from '@shared/PageTitle'
-import { useSearchParams } from 'react-router'
-const NewArticle: FC = () => {
+import { TArticle } from '../control/types'
+import Space from '@shared/Space'
+import TagsInput from '@shared/TagsInput'
+
+const NewArticle: FC<{ editedArticle?: TArticle }> = ({ editedArticle }) => {
   const [query] = useSearchParams()
   const responseTo = query.get('responseTo')
-  const [title, setTitle] = useState('')
-  const [excerpt, setExcerpt] = useState('')
-  const [contents, setContents] = useState<PartialBlock[]>([])
+  const [title, setTitle] = useState(editedArticle?.title || '')
+  const [tags, setTags] = useState(editedArticle?.tags)
+  const [excerpt, setExcerpt] = useState(editedArticle?.excerpt || '')
+  const [contents, setContents] = useState<PartialBlock[]>(
+    editedArticle?.content ? JSON.parse(editedArticle.content) : [],
+  )
   const [createFn] = useCreateArticleMutation()
+
+  const [updateFn] = useUpdateArticleMutation()
+
+  const isEdit = !!editedArticle
 
   const { data: response } = useGetArticleBySlugQuery(
     { slug: responseTo! },
-    { skip: !responseTo },
+    { skip: !responseTo || isEdit },
   )
 
   const counterArticle = response?.payload
 
   const onSubmit = async (published: boolean) => {
+    if (!title.trim())
+      return snackbar({ severity: 'error', message: 'Title is required' })
+    if (!excerpt.trim())
+      return snackbar({ severity: 'error', message: 'Excerpt is required' })
+    if (isEdit) {
+      return updateFn({
+        ...editedArticle,
+        title,
+        excerpt,
+        content: JSON.stringify(contents),
+        published,
+      })
+    }
     createFn({
       title,
       content: JSON.stringify(contents),
+      excerpt,
       published,
+      responseToId: counterArticle?.id,
     })
   }
 
   const isResponse = !!counterArticle
 
+  useEffect(() => {
+    if (counterArticle) setExcerpt(`Response to ${counterArticle.title}`)
+  }, [counterArticle])
+
+  const pageTitle = (() => {
+    if (isEdit) return `Edit - ${editedArticle.title}`
+
+    if (isResponse) return `Response to - ${counterArticle.title}`
+
+    return 'New Article'
+  })()
+
   return (
     <PageContainer sx={{ flexDirection: 'row' }}>
-      <PageTitle>
-        {isResponse ? `Response to ${responseTo}` : 'New Article'}
-      </PageTitle>
+      <PageTitle>{pageTitle}</PageTitle>
       <Stack gap={4} sx={{ width: '100%' }}>
-        <Input
-          slotProps={{ input: { maxLength: settings.MAX_TITLE_LENGTH } }}
+        {isEdit && <Alert severity="info" children="Editing" />}
+        <TextField
+          slotProps={{
+            htmlInput: {
+              maxLength: MAX_TITLE_LENGTH,
+              sx: {
+                fontSize: '2rem',
+                fontWeight: 'bold',
+              },
+            },
+          }}
           placeholder={'Article title'}
-          defaultValue={isResponse ? `Title - Response to ${responseTo}` : ''}
+          variant="standard"
           value={title}
           onChange={event => setTitle(event.target.value)}
           multiline
-          sx={{
-            width: '100%',
-            fontSize: '3rem',
-          }}
           required
         />
-        <TextField label="Excerpt" required>
-          <TextareaAutosize
-            maxRows={4}
-            value={excerpt}
-            onChange={event => setExcerpt(event.target.value)}
-          />
-        </TextField>
+        <TextField
+          label="Excerpt - The text to show in the preview."
+          value={excerpt}
+          onChange={event => setExcerpt(event.target.value)}
+          required
+          multiline
+          maxRows={3}
+          slotProps={{ htmlInput: { maxLength: MAX_EXCERPT_LENGTH } }}
+          helperText={
+            <CharacterLimit current={excerpt.length} max={MAX_EXCERPT_LENGTH} />
+          }
+        />
         <Box flex={1}>
           <Editor onChange={setContents} data={contents} />
         </Box>
         <Divider />
-        <Box display={'flex'} justifyContent={'flex-end'} columnGap={2}>
-          <ActionButton type="outlined" onClick={() => onSubmit(false)}>
-            Save as Draft
-          </ActionButton>
-          <ActionButton type="submit" onClick={() => onSubmit(true)}>
-            Publish
-          </ActionButton>
-        </Box>
+
+        <Space justifyContent={'space-between'} alignItems={'flex-end'}>
+          <Space alignItems={'center'} maxWidth={'35vw'}>
+            <Typography>Tags: </Typography>
+            <TagsInput value={tags} onChange={setTags} />
+          </Space>
+
+          <Box
+            display={'flex'}
+            justifyContent={'flex-end'}
+            columnGap={2}
+            flex={1}
+          >
+            <ActionButton type="outlined" onClick={() => onSubmit(false)}>
+              Save as Draft
+            </ActionButton>
+            <ActionButton type="submit" onClick={() => onSubmit(true)}>
+              Publish
+            </ActionButton>
+          </Box>
+        </Space>
       </Stack>
     </PageContainer>
   )
 }
 
-export default NewArticle
+export default memo(NewArticle)

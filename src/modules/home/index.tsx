@@ -12,7 +12,7 @@ import PageTitle from '../../shared/PageTitle'
 const Home: FC = () => {
   const { data: response } = useGetArticlesQuery({
     sort: 'createdAt,-1',
-    limit: 15,
+    limit: 10,
     populate: [{ path: 'author' }],
   })
 
@@ -64,6 +64,9 @@ const Home: FC = () => {
                         sx={{
                           fontSize:
                             article.title.length > 20 ? '3rem' : '10rem',
+                          textAlign: 'center',
+                          px: 4,
+                          pb: 4,
                         }}
                       >
                         {article.title}

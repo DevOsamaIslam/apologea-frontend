@@ -1,4 +1,3 @@
-import { useAppSelector } from '@app/store'
 import { useGetArticlesQuery } from '@modules/articles/control/api'
 import { useUploadMutation } from '@modules/gallery/api'
 import { Avatar, Divider, Stack, Typography, useTheme } from '@mui/material'
@@ -14,13 +13,12 @@ import { useParams } from 'react-router'
 import { useGetUserQuery, useUpdateUserMutation } from './control/api'
 
 const UserProfile: FC = () => {
-  const user = useAppSelector(state => state.user.user)
-  const { name } = useParams()
+  const { username } = useParams()
   const theme = useTheme()
 
   const { data: userResponse } = useGetUserQuery(
-    { name: name! },
-    { skip: !user },
+    { name: username! },
+    { skip: !username },
   )
 
   const [uploadFn] = useUploadMutation()
@@ -28,22 +26,25 @@ const UserProfile: FC = () => {
 
   const profile = userResponse?.payload
 
-  const { data: response, isFetching } = useGetArticlesQuery({
-    filters: [
-      {
-        field: 'authorId',
-        operator: 'equals',
-        value: profile?._id,
-      },
-    ],
-    limit: 100,
-    sort: 'createdAt,-1',
-    populate: [
-      {
-        path: 'author',
-      },
-    ],
-  })
+  const { data: response, isFetching } = useGetArticlesQuery(
+    {
+      filters: [
+        {
+          field: 'authorId',
+          operator: 'equals',
+          value: profile?._id,
+        },
+      ],
+      limit: 100,
+      sort: 'createdAt,-1',
+      populate: [
+        {
+          path: 'author',
+        },
+      ],
+    },
+    { skip: !username },
+  )
 
   return (
     <Stack gap={8}>

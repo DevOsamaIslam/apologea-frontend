@@ -23,6 +23,7 @@
       "@constants/*": ["src/lib/constants/*"],
       "@helpers/*": ["src/lib/helpers/*"],
       "@assets/*": ["src/assets/*"],
+      "@assets/*": ["src/assets/*"],
       "#store": ["src/app/store/"]
     },
     "typeRoots": ["./src/lib/types/"],
@@ -33,7 +34,8 @@
     // "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
-    "composite": true
+    "composite": true,
+    "noImplicitAny": false
   },
   "include": ["src"]
 }

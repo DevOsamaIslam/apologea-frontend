@@ -2,7 +2,7 @@ import { useAppSelector } from '@app/store'
 import { PartialBlock } from '@blocknote/core'
 import { formatDate } from '@lib/helpers/date'
 import { Compress, Gavel, ThumbUp, Visibility } from '@mui/icons-material'
-import { Avatar, Chip, Stack, Typography, useTheme } from '@mui/material'
+import { Avatar, Box, Chip, Stack, Typography, useTheme } from '@mui/material'
 import ActionButton from '@shared/ActionButton'
 import Loading from '@shared/LinearIndeterminate'
 import PageContainer from '@shared/PageContainer'
@@ -22,7 +22,19 @@ const ViewArticle: FC = () => {
   const theme = useTheme()
 
   const { data: response, isFetching } = useGetArticleBySlugQuery(
-    { slug, queryParams: { populate: [{ path: 'author' }] } },
+    {
+      slug,
+      queryParams: {
+        populate: [
+          { path: 'author' },
+          {
+            path: 'responses',
+            select: ['title', 'slug', 'authorId'],
+            populate: { path: 'authorId' },
+          },
+        ],
+      },
+    },
     {
       skip: !slug,
     },
@@ -85,6 +97,9 @@ const ViewArticle: FC = () => {
                     </Stack>
                   </Typography>
                   <Stack direction={'row'} gap={1}>
+                    <ActionButton type="edit" size="small" linkTo="edit">
+                      Edit
+                    </ActionButton>
                     <Chip
                       icon={<Compress />}
                       label={article.responses.length}
@@ -128,6 +143,17 @@ const ViewArticle: FC = () => {
               {article.likes.length}
             </ActionButton>
           </Stack>
+        </PageContainer>
+      )}
+
+      {!!article?.responses.length && (
+        <PageContainer>
+          <Typography variant="h2">Responses</Typography>
+          {article.responses.map(response => (
+            <Box>
+              <Link to={`/articles/${response.slug}`}>{response.title}</Link>
+            </Box>
+          ))}
         </PageContainer>
       )}
     </Stack>

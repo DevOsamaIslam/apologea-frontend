@@ -1,14 +1,14 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import settings from '../settings'
 import { REDUCER_PATHS, TAG_TYPES } from '@constants/api'
 import { getItem } from '@lib/helpers/localStorage'
+import { BASE_URL } from '@app/settings'
 
 export const apiSlice = createApi({
   reducerPath: REDUCER_PATHS.api,
   tagTypes: Object.keys(TAG_TYPES),
   baseQuery: fetchBaseQuery({
-    baseUrl: settings.BASE_URL,
-    prepareHeaders: (headers) => {
+    baseUrl: BASE_URL,
+    prepareHeaders: headers => {
       // Get the token from Redux state
       const token = getItem<string>('token')
 

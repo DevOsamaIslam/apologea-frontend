@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useLoginUserMutation } from '@modules/users/control/api'
 import { LoginSchema, TLoginPayload } from '@modules/users/control/types'
-import { Box, Container, Typography } from '@mui/material'
+import { Typography } from '@mui/material'
 import PageContainer from '@shared/PageContainer'
 import PageTitle from '@shared/PageTitle'
 import { CustomForm } from 'mui-custom-form'
@@ -41,7 +41,7 @@ const LoginPage: FC = () => {
   ]
 
   return (
-    <PageContainer sx={{ pt: 2 }}>
+    <PageContainer sx={{ pt: 2, maxHeight: '30vh', mt: 16 }}>
       <PageTitle>Login</PageTitle>
       <Typography variant="h5" gutterBottom>
         Login

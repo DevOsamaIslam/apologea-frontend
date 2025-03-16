@@ -1,7 +1,12 @@
 import { apiSlice } from '@app/api'
 import { appSlice } from '@app/store/app.slice'
 import { TAG_TYPES } from '@lib/constants/api'
-import { IBaseResponse, IPaginatedResponse, TGetQueryParams } from '@lib/types'
+import {
+  IBaseResponse,
+  IInfiniteQueryParams,
+  IPaginatedResponse,
+  TGetQueryParams,
+} from '@lib/types'
 import { TArticle, TCreateArticle, TUpdateArticle } from './types'
 import { snackbar } from '@shared/snack-bar/GlobalSnackbar'
 
@@ -10,6 +15,7 @@ export const {
   useCreateArticleMutation,
   useGetArticleBySlugQuery,
   useUpdateArticleMutation,
+  useGetArticlesStreamInfiniteQuery,
 } = apiSlice.injectEndpoints({
   endpoints: builder => ({
     createArticle: builder.mutation<IBaseResponse<TArticle>, TCreateArticle>({
@@ -47,6 +53,30 @@ export const {
       },
     }),
 
+    getArticlesStream: builder.infiniteQuery<
+      IBaseResponse<IPaginatedResponse<TArticle>>,
+      TGetQueryParams,
+      number
+    >({
+      infiniteQueryOptions: {
+        initialPageParam: 1,
+        maxPages: 3,
+        getNextPageParam: (lastPage, allPages, lastPageParam) =>
+          lastPageParam + 1,
+      },
+      query: ({
+        pageParam,
+        queryArg,
+      }: IInfiniteQueryParams<TGetQueryParams>) => ({
+        url: 'articles',
+        method: 'POST',
+        body: {
+          ...queryArg,
+          page: pageParam,
+        },
+      }),
+    }),
+
     getArticleBySlug: builder.query<
       IBaseResponse<TArticle>,
       { slug: string; queryParams?: TGetQueryParams }
@@ -70,12 +100,13 @@ export const {
           body: patchData,
         }
       },
-      onQueryStarted: (_, { queryFulfilled }) => {
+      onQueryStarted: (args, { queryFulfilled, dispatch }) => {
         queryFulfilled.then(() => {
           snackbar({
             severity: 'success',
             message: 'Article updated successfully',
           })
+          dispatch(appSlice.actions.redirect(`/articles/${args.slug}`))
         })
       },
     }),

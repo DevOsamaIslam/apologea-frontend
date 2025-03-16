@@ -1,23 +1,27 @@
-import { APP_NAME } from '@app/settings'
+import logo from '@assets/logo-outline.svg'
+import { useAppSelector } from '@app/store'
 import UserMenu from '@modules/user-menu'
 import { Create } from '@mui/icons-material'
 import {
   AppBar,
   Box,
   Fab,
-  Stack,
   Toolbar,
   Tooltip,
   Typography,
   useTheme,
 } from '@mui/material'
+import ActionButton from '@shared/ActionButton'
 import GlobalStyles from '@shared/GlobalStyles'
 import { Search } from '@shared/Search'
+import Space from '@shared/Space'
 import { Link, NavLink, Outlet, useNavigate } from 'react-router'
+import { APP_NAME } from '@app/settings'
 
 const MainLayout = () => {
   const theme = useTheme()
   const goto = useNavigate()
+  const user = useAppSelector(state => state.user)
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
@@ -39,14 +43,14 @@ const MainLayout = () => {
         }}
       >
         <Toolbar sx={{ justifyContent: 'space-between' }}>
-          <Typography
-            variant="h4"
-            sx={{ fontWeight: 'bold', color: 'white' }}
-            component={Link}
-            to={'/'}
-          >
-            {APP_NAME}
-          </Typography>
+          <Link to="/">
+            <Space alignItems={'center'}>
+              <img src={logo} width={100} />
+              <Typography variant="h3" color="white">
+                {APP_NAME}
+              </Typography>
+            </Space>
+          </Link>
 
           <Box sx={{ display: 'flex', gap: 3 }}>
             <NavLink
@@ -57,10 +61,20 @@ const MainLayout = () => {
             </NavLink>
           </Box>
           <Box>
-            <Stack direction={'row'} gap={1}>
+            <Space>
               <Search />
-              <UserMenu />
-            </Stack>
+              {user.isAuthenticated && <UserMenu />}
+              {!user.isAuthenticated && (
+                <Space>
+                  <ActionButton type="clear" linkTo="/auth/login">
+                    Login
+                  </ActionButton>
+                  <ActionButton type="secondary" linkTo="/auth/register">
+                    Register
+                  </ActionButton>
+                </Space>
+              )}
+            </Space>
           </Box>
         </Toolbar>
       </AppBar>

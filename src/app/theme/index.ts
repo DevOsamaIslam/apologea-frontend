@@ -1,35 +1,43 @@
-import { createTheme } from '@mui/material'
+import { createTheme, darken, lighten } from '@mui/material'
 import { amber, blue, green, red } from '@mui/material/colors'
 
 const theme = createTheme({
   palette: {
     primary: {
+      light: lighten('#088', 0.3),
       main: '#088',
+      dark: darken('#088', 0.3),
       contrastText: '#fff',
     },
     secondary: {
+      light: lighten('#800', 0.8),
       main: '#800',
+      dark: darken('#800', 0.5),
       contrastText: '#fff',
     },
     success: {
-      light: green[300],
+      light: green[100],
       main: green[500],
-      dark: green[800],
+      dark: green[900],
+      contrastText: '#fff',
     },
     error: {
-      light: red[300],
+      light: red[100],
       main: red[500],
-      dark: red[800],
+      dark: red[900],
+      contrastText: '#fff',
     },
     warning: {
-      light: amber[300],
+      light: amber[100],
       main: amber[500],
-      dark: amber[800],
+      dark: amber[900],
+      contrastText: '#fff',
     },
     info: {
-      light: blue[300],
+      light: blue[100],
       main: blue[500],
-      dark: blue[800],
+      dark: blue[900],
+      contrastText: '#fff',
     },
     background: {
       default: '#fff',
@@ -70,18 +78,6 @@ const theme = createTheme({
     ...createTheme().shadows.slice(5, 24),
   ],
   components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          borderRadius: 8,
-          fontWeight: 600,
-          padding: '8px 16px',
-        },
-        containedPrimary: {
-          boxShadow: '0px 2px 4px rgba(0,0,0,0.2)',
-        },
-      },
-    },
     MuiTextField: {
       styleOverrides: {
         root: {
@@ -89,14 +85,6 @@ const theme = createTheme({
           '& .MuiOutlinedInput-root': {
             borderRadius: 8,
           },
-        },
-      },
-    },
-    MuiPaper: {
-      styleOverrides: {
-        root: {
-          borderRadius: 8,
-          boxShadow: '0px 2px 4px rgba(0,0,0,0.1)',
         },
       },
     },
