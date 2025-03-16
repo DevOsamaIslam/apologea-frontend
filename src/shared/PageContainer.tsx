@@ -1,4 +1,4 @@
-import { Container } from '@mui/material'
+import { Container, Paper } from '@mui/material'
 import { ComponentProps, FC } from 'react'
 
 const PageContainer: FC<ComponentProps<typeof Container>> = ({
@@ -7,15 +7,14 @@ const PageContainer: FC<ComponentProps<typeof Container>> = ({
 }) => {
   return (
     <Container
+      component={Paper}
       sx={{
         flex: 1,
         display: 'flex',
         flexDirection: 'column',
         p: 2,
         position: 'relative',
-        top: -50,
-        boxShadow: 3,
-        background: (theme) => theme.palette.background.paper,
+        top: -64,
         ...sx,
       }}
       {...props}

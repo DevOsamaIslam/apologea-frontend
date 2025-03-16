@@ -18,9 +18,6 @@ const GlobalStyles = () => (
       'button.MuiButton-contained a': {
         color: theme.palette.background.paper,
       },
-      '.debug': {
-        border: '1px solid red',
-      },
     })}
   />
 )

@@ -166,6 +166,7 @@ const ActionButton: FC<IProps> = forwardRef((props, ref: any) => {
         buttonProps.endIcon = endIcon === true ? <EditIcon /> : undefined
         break
       case 'clear':
+        buttonProps.sx = { color: 'white' }
         buttonProps.variant = 'text'
         break
       case 'add':
@@ -182,8 +183,8 @@ const ActionButton: FC<IProps> = forwardRef((props, ref: any) => {
       case 'submit':
         buttonProps.variant = 'contained'
         buttonProps.color = 'primary'
-        buttonProps.startIcon = startIcon ?? <SendIcon />
-        buttonProps.endIcon = endIcon === true ? <SendIcon /> : undefined
+        buttonProps.startIcon = startIcon
+        buttonProps.endIcon = endIcon ?? <SendIcon />
         buttonProps.type = 'submit'
         break
       case 'outlined':
@@ -193,6 +194,7 @@ const ActionButton: FC<IProps> = forwardRef((props, ref: any) => {
 
     const tooltipProps =
       typeof tooltip === 'object' ? tooltip : { title: !disabled && tooltip }
+
     const ButtonComponent = (
       <StyledButton ref={ref} {...buttonProps}>
         {children}
