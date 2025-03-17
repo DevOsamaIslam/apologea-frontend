@@ -196,7 +196,14 @@ const ActionButton: FC<IProps> = forwardRef((props, ref: any) => {
       typeof tooltip === 'object' ? tooltip : { title: !disabled && tooltip }
 
     const ButtonComponent = (
-      <StyledButton ref={ref} {...buttonProps}>
+      <StyledButton
+        ref={ref}
+        {...buttonProps}
+        onClick={() => {
+          if (confirmMessage) setOpen(true)
+          else onClick()
+        }}
+      >
         {children}
       </StyledButton>
     )
@@ -237,36 +244,44 @@ const ActionButton: FC<IProps> = forwardRef((props, ref: any) => {
   const dialogProps =
     typeof confirmMessage === 'object' ? confirmMessage : undefined
 
-  if (confirmMessage) {
-    return (
-      <Dialog
-        open={open}
-        onClose={() => setOpen(false)}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-        {...dialogProps}
-      >
-        {!dialogProps && (
-          <>
-            <DialogTitle id="alert-dialog-title">
-              {typeof confirmMessage === 'boolean' ||
-              typeof confirmMessage === 'object'
-                ? 'Are you sure?'
-                : confirmMessage}
-            </DialogTitle>
-            <DialogActions>
-              <Button onClick={() => setOpen(false)} color="primary">
-                No
-              </Button>
-              <Button onClick={onClick} color="primary" autoFocus>
-                Yes
-              </Button>
-            </DialogActions>
-          </>
-        )}
-      </Dialog>
-    )
-  } else return renderButton()
+  const Confirm: FC = () => (
+    <Dialog
+      open={open}
+      onClose={() => setOpen(false)}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+      {...dialogProps}
+    >
+      <DialogTitle id="alert-dialog-title">
+        {typeof confirmMessage === 'boolean' ||
+        typeof confirmMessage === 'object'
+          ? 'Are you sure?'
+          : confirmMessage}
+      </DialogTitle>
+      <DialogActions>
+        <Button onClick={() => setOpen(false)} color="primary">
+          No
+        </Button>
+        <Button
+          onClick={() => {
+            onClick?.()
+            setOpen(false)
+          }}
+          color="primary"
+          autoFocus
+        >
+          Yes
+        </Button>
+      </DialogActions>
+    </Dialog>
+  )
+
+  return (
+    <>
+      <Confirm />
+      {renderButton()}
+    </>
+  )
 })
 
 export default ActionButton
