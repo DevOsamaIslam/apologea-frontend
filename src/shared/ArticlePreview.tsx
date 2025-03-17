@@ -1,6 +1,5 @@
-import { PartialBlock } from '@blocknote/core'
 import { formatDate } from '@lib/helpers/date'
-import { TArticle, TParagraphBlock } from '@modules/articles/control/types'
+import { TArticle } from '@modules/articles/control/types'
 import { ThumbUp, Visibility } from '@mui/icons-material'
 import { Box, Chip, Stack, Typography } from '@mui/material'
 import React from 'react'
@@ -8,12 +7,7 @@ import { useNavigate } from 'react-router'
 import ActionButton from './ActionButton'
 
 const ArticlePreview: React.FC<{ article: TArticle }> = ({ article }) => {
-  const articleBlocks: PartialBlock[] = JSON.parse(article.content)
   const goto = useNavigate()
-
-  const firstTextBlock = articleBlocks.find(
-    (block) => block.type === 'paragraph',
-  ) as TParagraphBlock | undefined
 
   return (
     <Box sx={{ width: '70%', mx: 'auto', px: 8 }}>
@@ -55,12 +49,9 @@ const ArticlePreview: React.FC<{ article: TArticle }> = ({ article }) => {
         </Stack>
 
         {/* Description */}
-        {firstTextBlock && (
+        {article.excerpt && (
           <Typography variant="body1" color="text.secondary" sx={{ mt: 2 }}>
-            {
-              // @ts-expect-error...
-              firstTextBlock?.content?.[0]?.text.slice(0, 300) + '...'
-            }
+            {article.excerpt}
           </Typography>
         )}
 
