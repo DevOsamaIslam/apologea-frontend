@@ -1,4 +1,4 @@
-import logo from '@assets/logo-outline.svg'
+import logo from '/public/logo-outline.svg'
 import { useAppSelector } from '@app/store'
 import UserMenu from '@modules/user-menu'
 import { Create } from '@mui/icons-material'

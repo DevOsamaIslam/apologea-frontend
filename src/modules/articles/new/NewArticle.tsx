@@ -59,6 +59,7 @@ const NewArticle: FC<{ editedArticle?: TArticle }> = ({ editedArticle }) => {
         excerpt,
         content: JSON.stringify(contents),
         published,
+        tags,
       })
     }
     createFn({
@@ -67,6 +68,7 @@ const NewArticle: FC<{ editedArticle?: TArticle }> = ({ editedArticle }) => {
       excerpt,
       published,
       responseToId: counterArticle?.id,
+      tags,
     })
   }
 
